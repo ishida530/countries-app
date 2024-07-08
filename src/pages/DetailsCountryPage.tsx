@@ -17,10 +17,6 @@ const DetailsCountryPage = () => {
 
     const country = data[0];
 
-    // const nativeNameKey = Object.keys(country.name.nativeName)[0] || '';
-    // const currencyKey = Object.keys(country.currencies)[0] || '';
-    // const languageKey = Object.keys(country.languages)[0] || '';
-
     const {
         flags: { png },
         name: { official },
