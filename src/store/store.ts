@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { ICountry, IOptionReactSelect } from '../types/types';
 
 
@@ -7,7 +7,7 @@ interface IState {
     regions: IOptionReactSelect[];
     setCountries: (countries: ICountry[]) => void;
     setRegions: (options: IOptionReactSelect[]) => void;
-    
+
 }
 
 export const useStore = create<IState>((set) => ({
