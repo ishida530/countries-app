@@ -11,8 +11,8 @@ const HomePage = () => {
     const { isDarkMode } = useTheme();
 
 
-    const customStyles = useMemo<Record<string, (provided: CSSObjectWithLabel, state: OptionProps<string>) => CSSObjectWithLabel>>(() => ({
-        control: (provided) => ({
+    const customStyles = (isDarkMode: boolean) => ({
+        control: (provided: CSSObjectWithLabel) => ({
             ...provided,
             backgroundColor: isDarkMode ? '#2B3743' : '#FFFFFF',
             borderColor: isDarkMode ? '#2B3743' : '#E2E8F0',
@@ -24,18 +24,17 @@ const HomePage = () => {
                 borderColor: isDarkMode ? '#2B3743' : '#E2E8F0',
             },
             transition: 'none !important'
-
         }),
-        menu: (provided) => ({
+        menu: (provided: CSSObjectWithLabel) => ({
             ...provided,
             backgroundColor: isDarkMode ? '#2D3748' : '#FFFFFF',
             color: isDarkMode ? '#FFFFFF' : '#000000',
         }),
-        singleValue: (provided) => ({
+        singleValue: (provided: CSSObjectWithLabel) => ({
             ...provided,
             color: isDarkMode ? '#FFFFFF' : '#000000',
         }),
-        option: (provided, state) => ({
+        option: (provided: CSSObjectWithLabel, state: OptionProps<string>) => ({
             ...provided,
             backgroundColor: state.isFocused ? (isDarkMode ? '#4A5568' : '#E2E8F0') : (isDarkMode ? '#2D3748' : '#FFFFFF'),
             color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -44,8 +43,8 @@ const HomePage = () => {
                 backgroundColor: isDarkMode ? '#4A5568' : '#E2E8F0',
             },
         }),
+    });
 
-    }), [isDarkMode]);
     const { isLoading, error } = useFetchCountries();
     const { regions } = useStore()
 
