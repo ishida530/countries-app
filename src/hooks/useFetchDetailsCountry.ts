@@ -7,6 +7,8 @@ const fetchDetailsCountry = async (code: string) => {
 };
 export const useFetchDetailsCountry = (code: string) => {
     return useQuery(['country', code], () => fetchDetailsCountry(code), {
+        staleTime: 300000,  
+        cacheTime: 600000, 
         retry: 1,
         onSuccess: (data) => {
             console.log('Fetched country successfully', data);

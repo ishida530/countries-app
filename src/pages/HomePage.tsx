@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { ChangeEvent, Suspense, useCallback, useMemo } from 'react';
 import Select, { CSSObjectWithLabel, OptionProps, SingleValue } from 'react-select';
 import { useTheme } from '../context/ThemeContext';
 import SearchField from '../components/SearchField';
@@ -11,7 +11,7 @@ const HomePage = () => {
     const { isDarkMode } = useTheme();
 
 
-    const customStyles: Record<string, (provided: CSSObjectWithLabel, state: OptionProps) => CSSObjectWithLabel> = {
+    const customStyles = useMemo<Record<string, (provided: CSSObjectWithLabel, state: OptionProps<string>) => CSSObjectWithLabel>>(() => ({
         control: (provided) => ({
             ...provided,
             backgroundColor: isDarkMode ? '#2B3743' : '#FFFFFF',
@@ -45,12 +45,22 @@ const HomePage = () => {
             },
         }),
 
-    };
+    }), [isDarkMode]);
     const { isLoading, error } = useFetchCountries();
     const { regions } = useStore()
 
     const { filteredCountryByPhrase, filteredCountryByRegion, originalCountries } = useFilterCountries()
 
+    const handleFilterByPhrase = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        filteredCountryByPhrase(e.target.value)
+    }, [filteredCountryByPhrase])
+
+
+    const handleFilteredCountryByRegion = useCallback((selectedOption: SingleValue<{ value: string }>) => {
+        if (selectedOption && selectedOption.value) {
+            filteredCountryByRegion(selectedOption.value);
+        }
+    }, [filteredCountryByRegion])
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div className="text-7xl  text-black dark:text-white">Error fetching data</div>;
@@ -61,17 +71,13 @@ const HomePage = () => {
         <section className='p-10'>
             <Suspense fallback={<p>loading...</p>}>
                 <div className='flex flex-col md:flex-row gap-5 justify-start  md:justify-between md:items-center'>
-                    <SearchField onChange={(e) => filteredCountryByPhrase(e.target.value)} />
+                    <SearchField onChange={handleFilterByPhrase} />
                     <div className=''>
                         <Select
                             styles={customStyles}
                             placeholder="Filter by region"
                             options={regions}
-                            onChange={(selectedOption: SingleValue<{ value: string }>) => {
-                                if (selectedOption && selectedOption.value) {
-                                    filteredCountryByRegion(selectedOption.value)
-                                }
-                            }} />
+                            onChange={handleFilteredCountryByRegion} />
                     </div>
                 </div>
                 <ListCountries items={originalCountries} />

@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -11,11 +11,12 @@ const DetailsCountryPage = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { data, isLoading, error } = useFetchDetailsCountry(id ?? '');
-
+    
+    const country = useMemo(() => data[0], [data]);
+    
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div className="text-7xl  text-black dark:text-white">Error fetching data</div>;
 
-    const country = data[0];
 
     const {
         flags: { png },

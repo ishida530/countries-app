@@ -12,8 +12,8 @@ export const useFetchCountries = () => {
     const { setCountries, setRegions } = useStore();
 
     const { data, isLoading, error } = useQuery('countries', fetchCountries, {
-        staleTime: 5000,
-        cacheTime: 10000,
+        staleTime: 300000,
+        cacheTime: 600000,
         retry: 1,
         onSuccess: (data) => {
             const uniqueRegions = data.reduce((acc: IOptionReactSelect[], country: ICountry) => {
