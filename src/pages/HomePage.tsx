@@ -1,4 +1,4 @@
-import { ChangeEvent, Suspense, useCallback, useMemo } from 'react';
+import { ChangeEvent, Suspense, useCallback } from 'react';
 import Select, { CSSObjectWithLabel, OptionProps, SingleValue } from 'react-select';
 import { useTheme } from '../context/ThemeContext';
 import SearchField from '../components/SearchField';
